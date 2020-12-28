@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="a37710d0-ba30-41fe-84a5-e5f623691eff" >
+		<http:listener-connection host="0.0.0.0" port="8082" />
+	</http:listener-config>
+	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="1b4eaf8d-6bf3-432b-8e0b-e9cef1b4496a">
+		<http:request-connection host="reqres.in/api" protocol="HTTPS"/>
+	</http:request-config>
+	<http:request-config name="HTTP_Request_configuration1" doc:name="HTTP Request configuration" doc:id="9cc45660-9bef-4b55-8f4c-a5233b80bb1d" >
+		<http:request-connection protocol="HTTPS" host="reqres.in" port="443" />
+	</http:request-config>
+	<flow name="ex_apiFlow" doc:id="7a14fcfe-a13f-466a-9099-cc26a49d99cb" >
+		<http:listener doc:name="Listener" doc:id="56c2f9cf-ad17-466e-aae8-0e8d86c16fbe" config-ref="HTTP_Listener_config" path="/api/{pid}"/>
+		<set-variable value="#[attributes.queryParams.pid]" doc:name="Set Variable" doc:id="eb602961-b9b8-4f82-92c6-96f9c5cad38c" variableName="exa"/>
+		<http:request method="GET" doc:name="Request" doc:id="19028dc5-7aec-4042-a84f-cb93d0b102ec" config-ref="HTTP_Request_configuration1" path="/api/users">
+			<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"page" : vars.exa
+}]]]></http:query-params>
+		</http:request>
+	</flow>
+</mule>
