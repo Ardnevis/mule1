@@ -23,6 +23,5 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 	"page" : vars.exa
 }]]]></http:query-params>
 		</http:request>
-		<logger level="INFO" doc:name="Logger" doc:id="ad831d56-05ff-40d7-946f-457f18a33dca" message="#[payload]"/>
 	</flow>
 </mule>
